@@ -1,96 +1,23 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Random Selector</title>
-    <link rel="icon" href="icon.ico">
-    <style>
-        @media (prefers-color-scheme: light) {
-            body {
-                background-color: #fff;
-                color: #000;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #000;
-                color: #fff;
-            }
-        }
-
-        #center-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        #text-container {
-            font-size: 8vw;
-            text-align: center;
-            word-break: keep-all;
-        }
-
-        button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Word Selector</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div id="center-container">
-        <div id="text-container">Random Selector</div>
+    <div class="container">
+        <h1>Random Selector</h1>
+        <form id="wordForm">
+            <label for="type">Select type:</label>
+            <select id="type" name="type">
+                <!-- Options will be populated by JavaScript -->
+            </select>
+            <button type="button" onclick="selectRandomWord()">Select</button>
+        </form>
+        <p id="result"></p>
     </div>
-    <button id="toggle-animation" onclick="toggleAnimation()">Next</button>
-
-    <script>
-        // Define an empty array to store the word list
-        let wordList = [];
-        let isPaused = false;
-        let timeout;
-
-        function initAnimation() {
-            // Fetch the TSV file using fetch() and convert it to a text string using text()
-            fetch('wordlist.tsv')
-                .then(response => response.text())
-                .then(data => {
-                    // Split the text string into an array of rows using split()
-                    const rows = data.split('\n');
-
-                    // Loop through the rows and split each row into an array of columns using split()
-                    for (let i = 1; i < rows.length; i++) {
-                        if (rows[i] == "") {
-                            break;
-                        }
-                        const columns = rows[i].split('\t');
-
-                        // Create an object with keys for type and word and push it to the wordList array
-                        wordList.push({
-                            type: columns[0],
-                            name: columns[1],
-                        });
-                    }
-                    console.log(wordList);
-                })
-                .catch(error => console.error(error));
-        }
-
-        function updateText() {
-            const textContainer = document.getElementById("text-container");
-            // Select a random word from the filtered list
-            const neta = wordList[Math.floor(Math.random() * wordList.length)];
-            textContainer.innerText = neta.type + "\n" + neta.name;
-        }
-
-        function toggleAnimation() {
-            updateText();
-        }
-
-        initAnimation();
-    </script>
+    <script src="script.js"></script>
 </body>
-
 </html>
